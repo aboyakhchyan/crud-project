@@ -37,8 +37,8 @@ export const getUser = async (id: number): Promise<IUser> => {
     return sql.prepare(stm).get(id) as IUser
 }
 
-export const editUser = async (data: InputUser, id: number): Promise<IUser> => {
-    const {name, surname, age} = data
+export const editUser = async (user: InputUser, id: number): Promise<IUser> => {
+    const {name, surname, age} = user
 
     const stm = `SELECT * FROM users WHERE id = ?`
 
@@ -46,12 +46,12 @@ export const editUser = async (data: InputUser, id: number): Promise<IUser> => {
 
     if(check) {
         sql.prepare(`UPDATE users SET name = ?, surname = ?, age = ? WHERE id = ?`)
-        .run({name, surname, age, id})
+        .run([name, surname, age, id])
 
         return sql.prepare(stm).get(id) as IUser
     }else {
         sql.prepare(`INSERT INTO users(name, surname, age)
-                     VALUES (@name, @surname, @age)`).run(data)
+                     VALUES (@name, @surname, @age)`).run(user)
 
         return sql.prepare(stm).get(id) as IUser
     }

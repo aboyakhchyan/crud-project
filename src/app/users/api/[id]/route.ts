@@ -26,14 +26,13 @@ export const GET = async (req: NextRequest, {params}: IProps) => {
 }
 
 export const PUT = async (req: NextRequest, {params}: IProps) => {
-    const body = await req.json()
+        const body = await req.json()
 
-    const user = await editUser(body, params.id)
+        const user = await editUser(body, params.id)
 
-    if(!user) {
-        return Response.json({status: 'error', payload: null})
-    }
+        if(!user) {
+            return Response.json({status: 'error', payload: null})
+        }
 
-    return Response.json({status: 'ok', payload: user})
-
+        return Response.json({status: 'ok', payload: user})   
 }

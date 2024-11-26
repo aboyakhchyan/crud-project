@@ -3,6 +3,7 @@
 import { InputUser, IUser } from "@/_helpers/types"
 import { handleEditUser, handleGetUser } from "@/lib/api"
 import { useParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -12,13 +13,16 @@ export default function User () {
 
     const [user, setUser] = useState<IUser | null>(null)
     const {id} = useParams()
+    const router = useRouter()
     const {register, handleSubmit, formState: {errors}, reset} = useForm<InputUser>()
 
     const onSubmit = (data: InputUser) => {
         if(id) {
             handleEditUser(+id, data)
             .then(response => {
-                console.log(response)
+                if(response.status == 'ok') {
+                    router.push('/')
+                }
             })
             reset()
         }
